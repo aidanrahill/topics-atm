@@ -7,6 +7,26 @@ public class ATM {
 
     HashMap<String, Double> vault;
 
+    public static void main(String[] args) {
+        ATM atm = new ATM();
+        try {
+            atm.openAccount("bob", 500);
+            atm.openAccount("stuart", 100);
+            atm.withdrawMoney("bob", 200);
+            atm.depositMoney("stuart", 50);
+            atm.transferMoney("bob", "stuart", 200);
+            atm.audit();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    public ATM() {
+        vault = new HashMap<String, Double>();
+    }
+
     public void openAccount(String id, double dough) throws Exception {
         if (vault.get(id) != null) {
             throw new Exception("ID is already in system.");
@@ -35,8 +55,9 @@ public class ATM {
         if (vault.get(id) == null) {
             throw new Exception("Account does not exist.");
         }
-        Double money = vault.get(id);
-        money += racks;
+        double money = vault.get(id);
+        vault.remove(id);
+        openAccount(id, money + racks);
         return racks;
     }
 
@@ -47,8 +68,9 @@ public class ATM {
         if (vault.get(id) < moolah) {
             throw new Exception("are you in college?");
         }
-        Double money = vault.get(id);
-        money -= moolah;
+        double money = vault.get(id);
+        vault.remove(id);
+        openAccount(id, money - moolah);
         return moolah;
     }
 
